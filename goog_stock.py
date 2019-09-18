@@ -11,83 +11,43 @@ Original file is located at
 #              using the Machine Learning algorithm called Support Vector Regression (SVR)
 #              & Linear Regression.
 
-#Import the libraries
+# Import the libraries
 import pandas as pd
-import numpy as np
-from sklearn.svm import SVR
-from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import utils
+import numpy
 
-#Load the data
-#from google.colab import files # Use to load data on Google Colab
-#uploaded = files.upload() # Use to load data on Google Colab
-df = pd.read_csv('GOOG_30_days.csv')
-df.head(7)
 
-#Create the lists / X and Y data sets
-dates = []
-prices = []
+# Load the data
+# from google.colab import files # Use to load data on Google Colab
+# uploaded = files.upload() # Use to load data on Google Colab
 
-#Get the number of rows and columns in the data set
-df.shape
+def create_plot(dates, original_prices, ml_models_outputs):
+    plt.scatter(dates, original_prices, color='black', label='Data')
+    for model in ml_models_outputs.keys():
+        plt.plot(dates, (ml_models_outputs[model])[0], color=numpy.random.rand(3, ), label=model)
 
-#Get the last row of data (this will be the data that we test on)
-df.tail(1)
+    plt.xlabel('Days')
+    plt.ylabel('Price')
+    plt.title('Regression')
+    plt.legend()
+    # plt.savefig("Plot.png")
+    plt.show()
 
-#Get all of the data except for the last row
-df = df.head(len(df)-1)
-df
 
-#The new shape of the data
-df.shape
+def train_predict_plot(file_name, ml_model):
+    df = pd.read_csv(file_name)
+    # print (df.head())
 
-#Get all of the rows from the Date Column
-df_dates = df.loc[:, 'Date']
-#Get all of the rows from the Open Column
-df_open = df.loc[:, 'Open']
+    ml_models_outputs = {}
 
-#Create the independent data set X
-for date in df_dates:
-  dates.append( [int(date.split('-')[2])])
-  
-#Create the dependent data se 'y'
-for open_price in df_open:
-  prices.append(float(open_price))
+    dates, prices, test_date, test_price = utils.getData(df)
+    # utils.LSTM_model(dates, prices, test_date, df)
+    for model in ml_model:
+        method_to_call = getattr(utils, model)
+        ml_models_outputs[model] = method_to_call(dates, prices, test_date, df)
 
-#See what days were recorded
-print(dates)
+    create_plot(dates, prices, ml_models_outputs)
 
-def predict_prices(dates, prices, x):
-  
-  #Create the 3 Support Vector Regression models
-  svr_lin = SVR(kernel='linear', C= 1e3)
-  svr_poly= SVR(kernel='poly', C=1e3, degree=2)
-  svr_rbf = SVR(kernel='rbf', C=1e3, gamma=0.1)
-  
-  #Train the SVR models 
-  svr_lin.fit(dates,prices)
-  svr_poly.fit(dates,prices)
-  svr_rbf.fit(dates,prices)
-  
-  #Create the Linear Regression model
-  lin_reg = LinearRegression()
-  #Train the Linear Regression model
-  lin_reg.fit(dates,prices)
-  
-  #Plot the models on a graph to see which has the best fit
-  plt.scatter(dates, prices, color='black', label='Data')
-  plt.plot(dates, svr_rbf.predict(dates), color='red', label='SVR RBF')
-  plt.plot(dates, svr_poly.predict(dates), color='blue', label='SVR Poly')
-  plt.plot(dates, svr_lin.predict(dates), color='green', label='SVR Linear')
-  plt.plot(dates, lin_reg.predict(dates), color='orange', label='Linear Reg')
-  plt.xlabel('Days')
-  plt.ylabel('Price')
-  plt.title('Regression')
-  plt.legend()
-  plt.savefig("Plot.png")
-  
-  return svr_rbf.predict(x)[0], svr_lin.predict(x)[0],svr_poly.predict(x)[0],lin_reg.predict(x)[0]
 
-#Predict the price of GOOG on day 28
-predicted_price = predict_prices(dates, prices, [[28]])
-print(predicted_price)
+train_predict_plot('GOOG_30_days.csv', ['LSTM_model', 'BR', 'KNN', 'DT'])
