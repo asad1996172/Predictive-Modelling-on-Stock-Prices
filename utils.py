@@ -183,4 +183,7 @@ def LSTM_model(dates, prices, test_date, df):
     testPredict = scaler.inverse_transform(testPredict)
     testY = scaler.inverse_transform([testY])
     # calculate root mean squared error
-    return trainPredict, testPredict
+    trainPredict = [item for sublist in trainPredict for item in sublist]
+    # print(trainPredict, testPredict[0])
+
+    return (trainPredict, testPredict[0])

@@ -50,4 +50,4 @@ def train_predict_plot(file_name, ml_model):
     create_plot(dates, prices, ml_models_outputs)
 
 
-train_predict_plot('GOOG_30_days.csv', ['LSTM_model', 'BR', 'KNN', 'DT'])
+train_predict_plot('GOOG_30_days.csv', ['LSTM_model'])
