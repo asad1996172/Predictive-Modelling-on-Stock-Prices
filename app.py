@@ -35,7 +35,7 @@ def hello_world():
 
     print(all_data)
 
-    return render_template('index.html', labels=dates, all_date=all_data)
+    return render_template('index.html', labels=dates, all_date=all_data, len=len(all_data))
 
 
 # main driver function
