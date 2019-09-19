@@ -35,8 +35,8 @@ def create_plot(dates, original_prices, ml_models_outputs):
     plt.show()
 
 
-def train_predict_plot(file_name, ml_model):
-    df = pd.read_csv(file_name)
+def train_predict_plot(file_name, df, ml_model):
+
     # print (df.head())
 
     ml_models_outputs = {}
@@ -47,9 +47,11 @@ def train_predict_plot(file_name, ml_model):
         method_to_call = getattr(utils, model)
         ml_models_outputs[model] = method_to_call(dates, prices, test_date, df)
 
-    create_plot(dates, prices, ml_models_outputs)
-
+    dates = list(df['Date'])
+    dates = dates[:-1]
+    # create_plot(dates, prices, ml_models_outputs)
+    return dates, prices, ml_models_outputs
 
 # train_predict_plot('GOOG_30_days.csv', ['LSTM_model', 'elastic_net', 'BR'])
-all_files = utils.read_all_stock_files('individual_stocks_5yr')
-print (all_files.keys())
+
+# print (all_files.keys())

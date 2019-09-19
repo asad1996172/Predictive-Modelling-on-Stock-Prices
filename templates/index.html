@@ -304,7 +304,9 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: [{% for item in labels %}
+                {{item}},
+              {% endfor %}],
     datasets: [{
       label: "Earnings",
       lineTension: 0.3,
@@ -362,17 +364,17 @@ var myLineChart = new Chart(ctx, {
           drawBorder: false
         },
         ticks: {
-          maxTicksLimit: 7
+<!--          maxTicksLimit: 7-->
         }
       }],
       yAxes: [{
         ticks: {
-          maxTicksLimit: 5,
+<!--          maxTicksLimit: 5,-->
           padding: 10,
           // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '$' + number_format(value);
-          }
+<!--          callback: function(value, index, values) {-->
+<!--            return '$' + number_format(value);-->
+<!--          }-->
         },
         gridLines: {
           color: "rgb(234, 236, 244)",
