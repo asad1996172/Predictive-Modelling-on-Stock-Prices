@@ -11,10 +11,26 @@ from keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import numpy
+import pandas as pd
 import math
+from sklearn.linear_model import ElasticNet
+import os
+
 # setting a seed for reproducibility
 numpy.random.seed(10)
 
+def read_all_stock_files(folder_path):
+    allFiles = []
+    for (_, _, files) in os.walk(folder_path):
+        allFiles.extend(files)
+        break
+
+    dataframe_dict = {}
+    for stock_file in allFiles:
+        df = pd.read_csv(folder_path + "/" +stock_file)
+        dataframe_dict[(stock_file.split('_'))[0]] = df
+
+    return dataframe_dict
 
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
@@ -133,15 +149,14 @@ def DT(dates, prices, test_date, df):
     return (decision_boundary, prediction)
 
 
-def BR(dates, prices, test_date, df):
-    br = linear_model.BayesianRidge()
-    br.fit(dates, prices)
-    decision_boundary = br.predict(dates)
+def elastic_net(dates, prices, test_date, df):
+    regr = ElasticNet(random_state=0)
+    regr.fit(dates, prices)
+    decision_boundary = regr.predict(dates)
 
-    prediction = br.predict([[test_date]])[0]
+    prediction = regr.predict([[test_date]])[0]
 
     return (decision_boundary, prediction)
-
 
 def LSTM_model(dates, prices, test_date, df):
     df.drop(df.columns.difference(['Date', 'Open']), 1, inplace=True)
@@ -184,6 +199,8 @@ def LSTM_model(dates, prices, test_date, df):
     testY = scaler.inverse_transform([testY])
     # calculate root mean squared error
     trainPredict = [item for sublist in trainPredict for item in sublist]
+    trainPredict.insert(0, trainPredict[0])
+    trainPredict.append(trainPredict[-1])
     # print(trainPredict, testPredict[0])
 
     return (trainPredict, testPredict[0])

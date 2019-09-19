@@ -31,7 +31,7 @@ def create_plot(dates, original_prices, ml_models_outputs):
     plt.ylabel('Price')
     plt.title('Regression')
     plt.legend()
-    # plt.savefig("Plot.png")
+    plt.savefig("Plot.png")
     plt.show()
 
 
@@ -50,4 +50,6 @@ def train_predict_plot(file_name, ml_model):
     create_plot(dates, prices, ml_models_outputs)
 
 
-train_predict_plot('GOOG_30_days.csv', ['LSTM_model'])
+# train_predict_plot('GOOG_30_days.csv', ['LSTM_model', 'elastic_net', 'BR'])
+all_files = utils.read_all_stock_files('individual_stocks_5yr')
+print (all_files.keys())
