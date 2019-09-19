@@ -13,7 +13,9 @@ app = Flask(__name__)
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
-    return render_template('index.html')
+    data_points = [0, 0, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000]
+    data_points2 = [0, 0, 5000, 22 , 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000]
+    return render_template('index.html', values=data_points, values1=data_points2)
 
 
 
