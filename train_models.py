@@ -48,9 +48,10 @@ def train_predict_plot(file_name, df, ml_model):
         ml_models_outputs[model] = method_to_call(dates, prices, test_date, df)
 
     dates = list(df['Date'])
-    dates = dates[:-1]
+    predict_date = dates[-1]
+    dates = dates[:-3]
     # create_plot(dates, prices, ml_models_outputs)
-    return dates, prices, ml_models_outputs
+    return dates, prices, ml_models_outputs, predict_date, test_price
 
 # train_predict_plot('GOOG_30_days.csv', ['LSTM_model', 'elastic_net', 'BR'])
 

@@ -42,6 +42,28 @@ def create_dataset(dataset, look_back=1):
     return numpy.array(dataX), numpy.array(dataY)
 
 
+def create_preprocessed_Dataset(df):
+    df.drop(df.columns.difference(['Date', 'Open']), 1, inplace=True)
+    df = df['Open']
+    dataset = df.values
+    dataset = dataset.reshape(-1, 1)
+    dataset = dataset.astype('float32')
+
+    # split into train and test sets
+    train_size = len(dataset) - 2
+    train, test = dataset[0:train_size, :], dataset[train_size:len(dataset), :]
+
+    # reshape into X=t and Y=t+1
+    look_back = 1
+    trainX, trainY = create_dataset(train, look_back)
+    testX, testY = create_dataset(test, look_back)
+
+    # reshape input to be [samples, time steps, features]
+    # trainX = numpy.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
+    # testX = numpy.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
+
+    return trainX, trainY, testX, testY
+
 def getData(df):
     # Create the lists / X and Y data sets
     dates = []
@@ -81,83 +103,86 @@ def getData(df):
 
 def SVR_linear(dates, prices, test_date, df):
     svr_lin = SVR(kernel='linear', C=1e3)
-    svr_lin.fit(dates, prices)
-    decision_boundary = svr_lin.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = svr_lin.predict([[test_date]])[0]
+    svr_lin.fit(trainX, trainY)
+    decision_boundary = svr_lin.predict(trainX)
 
-    return (decision_boundary, prediction)
-
-
-def SVR_poly(dates, prices, test_date, df):
-    svr_poly = SVR(kernel='poly', C=1e3, degree=2)
-    svr_poly.fit(dates, prices)
-    decision_boundary = svr_poly.predict(dates)
-
-    prediction = svr_poly.predict([[test_date]])[0]
+    prediction = svr_lin.predict(testX)[0]
 
     return (decision_boundary, prediction)
-
 
 def SVR_rbf(dates, prices, test_date, df):
     svr_rbf = SVR(kernel='rbf', C=1e3, gamma=0.1)
-    svr_rbf.fit(dates, prices)
-    decision_boundary = svr_rbf.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = svr_rbf.predict([[test_date]])[0]
+    svr_rbf.fit(trainX, trainY)
+    decision_boundary = svr_rbf.predict(trainX)
 
+    prediction = svr_rbf.predict(testX)[0]
     return (decision_boundary, prediction)
-
-
 def linear_regression(dates, prices, test_date, df):
     lin_reg = LinearRegression()
-    lin_reg.fit(dates, prices)
-    decision_boundary = lin_reg.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = lin_reg.predict([[test_date]])[0]
+    lin_reg.fit(trainX, trainY)
+    decision_boundary = lin_reg.predict(trainX)
 
+    prediction = lin_reg.predict(testX)[0]
     return (decision_boundary, prediction)
-
-
 def random_forests(dates, prices, test_date, df):
     rand_forst = RandomForestRegressor(n_estimators=10, random_state=0)
-    rand_forst.fit(dates, prices)
-    decision_boundary = rand_forst.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = rand_forst.predict([[test_date]])[0]
+    rand_forst.fit(trainX, trainY)
+    decision_boundary = rand_forst.predict(trainX)
+
+    prediction = rand_forst.predict(testX)[0]
 
     return (decision_boundary, prediction)
-
-
 def KNN(dates, prices, test_date, df):
     knn = KNeighborsRegressor(n_neighbors=2)
-    knn.fit(dates, prices)
-    decision_boundary = knn.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = knn.predict([[test_date]])[0]
+    knn.fit(trainX, trainY)
+    decision_boundary = knn.predict(trainX)
+
+    prediction = knn.predict(testX)[0]
 
     return (decision_boundary, prediction)
-
-
 def DT(dates, prices, test_date, df):
     decision_trees = tree.DecisionTreeRegressor()
-    decision_trees.fit(dates, prices)
-    decision_boundary = decision_trees.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = decision_trees.predict([[test_date]])[0]
+    decision_trees.fit(trainX, trainY)
+    decision_boundary = decision_trees.predict(trainX)
 
+    prediction = decision_trees.predict(testX)[0]
     return (decision_boundary, prediction)
-
-
 def elastic_net(dates, prices, test_date, df):
     regr = ElasticNet(random_state=0)
-    regr.fit(dates, prices)
-    decision_boundary = regr.predict(dates)
+    trainX, trainY, testX, testY = create_preprocessed_Dataset(df)
+    # trainX = [item for sublist in trainX for item in sublist]
+    # testX = [item for sublist in testX for item in sublist]
 
-    prediction = regr.predict([[test_date]])[0]
+    regr.fit(trainX, trainY)
+    decision_boundary = regr.predict(trainX)
+
+    prediction = regr.predict(testX)[0]
 
     return (decision_boundary, prediction)
-
 def LSTM_model(dates, prices, test_date, df):
     df.drop(df.columns.difference(['Date', 'Open']), 1, inplace=True)
     df = df['Open']
@@ -199,8 +224,7 @@ def LSTM_model(dates, prices, test_date, df):
     testY = scaler.inverse_transform([testY])
     # calculate root mean squared error
     trainPredict = [item for sublist in trainPredict for item in sublist]
-    trainPredict.insert(0, trainPredict[0])
-    trainPredict.append(trainPredict[-1])
+
     # print(trainPredict, testPredict[0])
 
-    return (trainPredict, testPredict[0])
+    return (trainPredict, (testPredict[0])[0])
