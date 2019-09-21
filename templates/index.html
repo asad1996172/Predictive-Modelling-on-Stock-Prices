@@ -16,6 +16,12 @@
           type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
     <!-- Custom styles for this template-->
     <link href="{{ url_for('static',filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
@@ -31,7 +37,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-network-wired"></i>
             </div>
@@ -46,66 +52,93 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider">
+        <form class="form-group" >
+            <!-- Heading -->
+            <div class="sidebar-brand-text mx-3" style="color:white;">
+                Stock File
+            </div>
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Stock File
-        </div>
+            <select class="selectpicker " data-live-search="true" >
+                 {% for i in range(0, stocklen) %}
+                    <option>{{ stock_files[i] }}</option>
+                {% endfor %}
+
+
+            </select>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-brand-text mx-3" style="color:white;">
+                ML Algorithm
+            </div>
+            <select class="selectpicker" multiple data-live-search="true">
+                <option value="SVR_linear">SVR (Linear)</option>
+                <option value="SVR_rbf">SVR (RBF)</option>
+                <option value="linear_regression">Linear Regression</option>
+                <option value="random_forests">Random Forests</option>
+                <option value="KNN">K Nearest Neighbors (KNN)</option>
+                <option value="DT">Decision Trees</option>
+                <option value="elastic_net">Elastic Net</option>
+                <option value="LSTM_model">LSTM model</option>
+
+            </select>
+            <br><br>
+            <input type="submit" value="Submit" class="btn btn-success">
+        </form>
+
 
         <!-- Nav Item - Pages Collapse Menu -->
 
 
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Utilities</span>
-            </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
-                </div>
-            </div>
-        </li>
+        <!--        &lt;!&ndash; Nav Item - Utilities Collapse Menu &ndash;&gt;-->
+        <!--        <li class="nav-item">-->
+        <!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"-->
+        <!--               aria-expanded="true" aria-controls="collapseUtilities">-->
+        <!--                <i class="fas fa-fw fa-wrench"></i>-->
+        <!--                <span>Utilities</span>-->
+        <!--            </a>-->
+        <!--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"-->
+        <!--                 data-parent="#accordionSidebar">-->
+        <!--                <div class="bg-white py-2 collapse-inner rounded">-->
+        <!--                    <h6 class="collapse-header">Custom Utilities:</h6>-->
+        <!--                    <a class="collapse-item" href="utilities-color.html">Colors</a>-->
+        <!--                    <a class="collapse-item" href="utilities-border.html">Borders</a>-->
+        <!--                    <a class="collapse-item" href="utilities-animation.html">Animations</a>-->
+        <!--                    <a class="collapse-item" href="utilities-other.html">Other</a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </li>-->
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
+        <!--        &lt;!&ndash; Divider &ndash;&gt;-->
+        <!--        <hr class="sidebar-divider">-->
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            ML Algorithm
-        </div>
+        <!--        &lt;!&ndash; Heading &ndash;&gt;-->
+        <!--        <div class="sidebar-heading">-->
+        <!--            ML Algorithm-->
+        <!--        </div>-->
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-               aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Pages</span>
-            </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
-                    <a class="collapse-item" href="register.html">Register</a>
-                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                    <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="404.html">404 Page</a>
-                    <a class="collapse-item" href="blank.html">Blank Page</a>
-                </div>
-            </div>
-        </li>
-
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+        <!--        &lt;!&ndash; Nav Item - Pages Collapse Menu &ndash;&gt;-->
+        <!--        <li class="nav-item">-->
+        <!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"-->
+        <!--               aria-expanded="true" aria-controls="collapsePages">-->
+        <!--                <i class="fas fa-fw fa-folder"></i>-->
+        <!--                <span>Pages</span>-->
+        <!--            </a>-->
+        <!--            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">-->
+        <!--                <div class="bg-white py-2 collapse-inner rounded">-->
+        <!--                    <h6 class="collapse-header">Login Screens:</h6>-->
+        <!--                    <a class="collapse-item" href="login.html">Login</a>-->
+        <!--                    <a class="collapse-item" href="register.html">Register</a>-->
+        <!--                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>-->
+        <!--                    <div class="collapse-divider"></div>-->
+        <!--                    <h6 class="collapse-header">Other Pages:</h6>-->
+        <!--                    <a class="collapse-item" href="404.html">404 Page</a>-->
+        <!--                    <a class="collapse-item" href="blank.html">Blank Page</a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </li>-->
 
 
     </ul>
@@ -236,6 +269,8 @@
 
 <!-- Page level custom scripts -->
 <script>
+
+
     // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
@@ -363,8 +398,7 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
-
-
+$('select').selectpicker();
 </script>
 
 

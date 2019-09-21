@@ -9,6 +9,7 @@ import pandas as pd
 # current module (__name__) as argument.
 app = Flask(__name__)
 
+
 def perform_training(stock_name, df, models_list):
     all_colors = {'SVR_linear': '#FF9EDD',
                   'SVR_poly': '#FFFD7F',
@@ -31,7 +32,8 @@ def perform_training(stock_name, df, models_list):
     all_data.append((prices, 'false', 'Data', '#000000'))
     for model_output in ml_models_outputs:
         if len(dates) > 20:
-            all_data.append((((ml_models_outputs[model_output])[0])[-20:], "true", model_output, all_colors[model_output]))
+            all_data.append(
+                (((ml_models_outputs[model_output])[0])[-20:], "true", model_output, all_colors[model_output]))
         else:
             all_data.append(
                 (((ml_models_outputs[model_output])[0]), "true", model_output, all_colors[model_output]))
@@ -43,6 +45,7 @@ def perform_training(stock_name, df, models_list):
 
     return all_prediction_data, all_prediction_data, prediction_date, dates, all_data, all_data
 
+
 # The route() function of the Flask class is a decorator,
 # which tells the application which URL should call
 # the associated function.
@@ -51,9 +54,15 @@ def perform_training(stock_name, df, models_list):
 def landing_function():
     all_files = utils.read_all_stock_files('individual_stocks_5yr')
     df = pd.read_csv('GOOG_30_days.csv')
-    all_prediction_data, all_prediction_data, prediction_date, dates, all_data, all_data = perform_training('A', df, ['SVR_linear','LSTM_model','SVR_rbf','linear_regression','random_forests','KNN','DT','elastic_net'])
-    return render_template('index.html', len2=len(all_prediction_data), all_prediction_data=all_prediction_data,
-                               prediction_date=prediction_date, dates=dates, all_data=all_data, len=len(all_data))
+    all_prediction_data, all_prediction_data, prediction_date, dates, all_data, all_data = perform_training('A', df, [
+        'SVR_linear', 'SVR_rbf', 'linear_regression', 'random_forests', 'KNN', 'DT', 'elastic_net'])
+    stock_files = list(all_files.keys())
+
+    return render_template('index.html', stocklen=len(stock_files), stock_files=stock_files, len2=len(all_prediction_data),
+                           all_prediction_data=all_prediction_data,
+                           prediction_date=prediction_date, dates=dates, all_data=all_data, len=len(all_data))
+
+
 # main driver function
 if __name__ == '__main__':
     # run() method of Flask class runs the application
