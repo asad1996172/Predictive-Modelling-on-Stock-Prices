@@ -43,8 +43,8 @@ def create_dataset(dataset, look_back=1):
 
 
 def create_preprocessed_Dataset(df):
-    df.drop(df.columns.difference(['Date', 'Open']), 1, inplace=True)
-    df = df['Open']
+    df.drop(df.columns.difference(['date', 'open']), 1, inplace=True)
+    df = df['open']
     dataset = df.values
     dataset = dataset.reshape(-1, 1)
     dataset = dataset.astype('float32')
@@ -83,9 +83,9 @@ def getData(df):
     # df.shape
 
     # Get all of the rows from the Date Column
-    df_dates = df.loc[:, 'Date']
+    df_dates = df.loc[:, 'date']
     # Get all of the rows from the Open Column
-    df_open = df.loc[:, 'Open']
+    df_open = df.loc[:, 'open']
 
     # Create the independent data set X
     for date in df_dates:
@@ -96,8 +96,8 @@ def getData(df):
         prices.append(float(open_price))
 
     # See what days were recorded
-    last_date = int(((list(last_row['Date']))[0]).split('-')[2])
-    last_price = float((list(last_row['Open']))[0])
+    last_date = int(((list(last_row['date']))[0]).split('-')[2])
+    last_price = float((list(last_row['open']))[0])
     return dates, prices, last_date, last_price
 
 

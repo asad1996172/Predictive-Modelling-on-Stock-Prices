@@ -47,7 +47,7 @@ def train_predict_plot(file_name, df, ml_model):
         method_to_call = getattr(utils, model)
         ml_models_outputs[model] = method_to_call(dates, prices, test_date, df)
 
-    dates = list(df['Date'])
+    dates = list(df['date'])
     predict_date = dates[-1]
     dates = dates[:-3]
     # create_plot(dates, prices, ml_models_outputs)

@@ -52,15 +52,15 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider">
-        <form class="form-group" >
+        <form class="form-group" style="text-align:center;" method="POST" action="/process">
             <!-- Heading -->
             <div class="sidebar-brand-text mx-3" style="color:white;">
                 Stock File
             </div>
 
-            <select class="selectpicker " data-live-search="true" >
-                 {% for i in range(0, stocklen) %}
-                    <option>{{ stock_files[i] }}</option>
+            <select class="selectpicker " data-live-search="true" name="stockfile">
+                {% for i in range(0, stocklen) %}
+                <option>{{ stock_files[i] }}</option>
                 {% endfor %}
 
 
@@ -73,7 +73,7 @@
             <div class="sidebar-brand-text mx-3" style="color:white;">
                 ML Algorithm
             </div>
-            <select class="selectpicker" multiple data-live-search="true">
+            <select class="selectpicker" multiple data-live-search="true" name="mlalgos">
                 <option value="SVR_linear">SVR (Linear)</option>
                 <option value="SVR_rbf">SVR (RBF)</option>
                 <option value="linear_regression">Linear Regression</option>
@@ -85,7 +85,7 @@
 
             </select>
             <br><br>
-            <input type="submit" value="Submit" class="btn btn-success">
+            <input type="submit" value="Submit" class="btn btn-success" style="color:white;">
         </form>
 
 
@@ -166,109 +166,120 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            {% if show_results == "false" %}
+            <p style="text-align:center;margin-top:15%">
+                    <i class="fas fa-cogs fa-5x" style="color:#1c5d3c;"></i>
+                    <br/>
+                    <br/>
+                    Start Analysis
+                </p>
+            <div class="container-fluid" style="display:none;">
+
+                {% else %}
+                <div class="container-fluid">
+                    {% endif %}
 
 
-                <!-- Content Row -->
+                    <!-- Content Row -->
 
-                <div class="row">
+                    <div class="row">
 
-                    <!-- Area Chart -->
-                    <div class="col-xl-12 col-lg-7">
-                        <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Decision Boundaries</h6>
+                        <!-- Area Chart -->
+                        <div class="col-xl-12 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Decision Boundaries</h6>
 
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <canvas id="myAreaChart"></canvas>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
 
-                        <!-- Page Heading -->
-                        <h1 class="h3 mb-2 text-gray-800">Prediction Results</h1>
-                        <p class="mb-4">The following table shows the original opening value of stock along with its
-                            predicted opening value on <br>Date: {{ prediction_date }}.</p>
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-2 text-gray-800">Prediction Results</h1>
+                            <p class="mb-4">The following table shows the original opening value of stock along with its
+                                predicted opening value on <br>Date: {{ prediction_date }}.</p>
 
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                        <tr>
-                                            <th>Model</th>
-                                            <th>Opening Value</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for i in range(0, len2) %}
-                                        <tr>
-                                            <td>{{ all_prediction_data[i][0] }}</td>
-                                            <td>{{ all_prediction_data[i][1] }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>Model</th>
+                                                <th>Opening Value</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for i in range(0, len2) %}
+                                            <tr>
+                                                <td>{{ all_prediction_data[i][0] }}</td>
+                                                <td>{{ all_prediction_data[i][1] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
+
 
                     </div>
 
 
                 </div>
-
+                <!-- /.container-fluid -->
 
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 3 Amigos 2019</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; 3 Amigos 2019</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
+        <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
 
-</div>
-<!-- End of Page Wrapper -->
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='css/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-<!-- Bootstrap core JavaScript-->
-<script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='css/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{{ url_for('static',filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="{{ url_for('static',filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{{ url_for('static',filename='js/sb-admin-2.min.js') }}"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="{{ url_for('static',filename='js/sb-admin-2.min.js') }}"></script>
+    <!-- Page level plugins -->
+    <script src="{{ url_for('static',filename='vendor/chart.js/Chart.min.js') }}"></script>
 
-<!-- Page level plugins -->
-<script src="{{ url_for('static',filename='vendor/chart.js/Chart.min.js') }}"></script>
-
-<!-- Page level custom scripts -->
-<script>
+    <!-- Page level custom scripts -->
+    <script>
 
 
     // Set new default font family and font color to mimic Bootstrap's default styling
@@ -399,7 +410,10 @@ var myLineChart = new Chart(ctx, {
   }
 });
 $('select').selectpicker();
-</script>
+
+
+
+    </script>
 
 
 </body>
