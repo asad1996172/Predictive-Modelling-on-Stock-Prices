@@ -184,8 +184,8 @@ def elastic_net(dates, prices, test_date, df):
 
     return (decision_boundary, prediction)
 def LSTM_model(dates, prices, test_date, df):
-    df.drop(df.columns.difference(['Date', 'Open']), 1, inplace=True)
-    df = df['Open']
+    df.drop(df.columns.difference(['date', 'open']), 1, inplace=True)
+    df = df['open']
     dataset = df.values
     dataset = dataset.reshape(-1, 1)
     dataset = dataset.astype('float32')
