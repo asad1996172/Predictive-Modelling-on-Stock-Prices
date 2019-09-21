@@ -1,13 +1,19 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import utils
 import train_models as tm
+import os
 import pandas as pd
 
 # Flask constructor takes the name of
 # current module (__name__) as argument.
 app = Flask(__name__)
+#
+# @app.route('/favicon.ico')
+# def favicon():
+#     return send_from_directory(os.path.join(app.root_path, 'static'),
+#                           'favicon.ico',mimetype='image/vnd.microsoft.icon')
 
 
 def perform_training(stock_name, df, models_list):
