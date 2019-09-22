@@ -201,6 +201,40 @@
                             </div>
                         </div>
 
+                         <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-2 text-gray-800">Model Evaluation</h1>
+                            <p class="mb-4">The following table shows the Mean Squared Error (MSE) for the different models. The lower the value, the better it is.</p>
+
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Test Evaluation</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>Model</th>
+                                                <th>Mean Squared Error (MSE)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for i in range(0, len2 - 1) %}
+                                            <tr>
+                                                <td>{{ all_test_evaluations[i][0] }}</td>
+                                                <td>{{ all_test_evaluations[i][1] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
@@ -213,7 +247,7 @@
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Predictions</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
