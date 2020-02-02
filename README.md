@@ -18,4 +18,4 @@ python3 app.py
 
 ## Demo
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](https://github.com/asad1996172/Predictive-Modelling-on-Stock-Prices/blob/master/demo.gif)
