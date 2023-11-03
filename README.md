@@ -1,8 +1,18 @@
 # Predictive Modelling with Stocks Data
-This project contains a Flask application that trains different ML Models on stock prices and then show it on a plot.
+The repository titled "Predictive Modelling on Stock Prices" is a Flask-based application designed to train various machine learning models on stock price data and visualize their predictions. The application allows users to compare the performance of different models, such as Random Forests, K Nearest Neighbors, SVM, and LSTM, implemented using scikit-learn and Keras. The predictions are plotted using the Chart.js library, providing an interactive way to analyze the predictive capabilities of each model.
 
-## Description
-This flask based tool compares the predictive modelling power of different Machine/Deep Learning models. For dataset, i have opening, high, low and closing values for different stocks like AAL, AAP, AAPL. Then to train different models, tool provides with a bunch of options like Random Forests, K Nearest Neighbors, SVM, LSTM etc.. Models are implemented using scikit-learn and keras. Performance of each chosen model is shown using Chart.js library.
+Features:
+- Model Training: Supports training multiple machine learning models on stock price data.
+- Visualization: Utilizes Chart.js to plot the predictions of each model for comparison.
+- Data Handling: Includes a dataset with stock prices (e.g., GOOG_30_days.csv) to train the models.
+- User Interaction: Offers a web interface for users to select stocks and models for prediction.
+
+Technical Details:
+- Web Framework: Flask
+- Machine Learning: scikit-learn, Keras
+- Data Visualization: Chart.js
+- Programming Language: Python
+
 
 ## Requirements
 This project requires python3. To install required libraries, run the following command.
